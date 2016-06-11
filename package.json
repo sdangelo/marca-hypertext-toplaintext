@@ -1,0 +1,30 @@
+{
+  "name": "marca-hypertext-toplaintext",
+  "version": "0.0.0",
+  "description": "Hypertext-to-plaintext for Marca",
+  "main": "marca-hypertext-toplaintext.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sdangelo/marca-hypertext-toplaintext.git"
+  },
+  "keywords": [
+    "marca",
+    "hypertext",
+    "plaintext",
+    "text",
+    "markup",
+    "language"
+  ],
+  "author": "Stefano D'Angelo <zanga.mail@gmail.com> (http://sdangelo.github.io/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sdangelo/marca-hypertext-plaintext/issues",
+    "email": "zanga.mail@gmail.com"
+  },
+  "peerDependencies": {
+    "marca-hypertext": "0.0.x"
+  }
+}
