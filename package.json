@@ -1,6 +1,6 @@
 {
   "name": "marca-hypertext-toplaintext",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Hypertext-to-plaintext for Marca",
   "main": "marca-hypertext-toplaintext.js",
   "scripts": {

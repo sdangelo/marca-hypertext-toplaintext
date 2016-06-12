@@ -125,6 +125,13 @@ module.exports = function (Marca) {
 		       + " (" + this.href + ")";
 	};
 
+	Marca.DOMElementHypertextSpan.toPlainText = function (indent) {
+		var string = "";
+		for (var i = 0; i < this.children.length; i++)
+			string += this.children[i].toPlainText(0);
+		return (new Array(indent + 1)).join("  ") + string;
+	};
+
 	Marca.DOMElementHypertextStrong.toPlainText = function (indent) {
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)

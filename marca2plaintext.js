@@ -9,7 +9,7 @@ var fs = require("fs");
 
 var Marca = require("marca");
 require("marca-hypertext")(Marca);
-require("marca-hypertext-toplaintext")(Marca);
+require("./marca-hypertext-toplaintext.js")(Marca);
 
 var root = Marca.parse(fs.readFileSync(process.argv[2], "utf8"));
 var dom = Object.create(Marca.DOMElementHypertextRoot);
