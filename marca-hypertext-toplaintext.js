@@ -77,7 +77,8 @@ module.exports = function (Marca) {
 			return "";
 
 		var string = "";
-		var digits = Math.floor(Math.log10(this.children.length)) + 1;
+		var digits = Math.floor(Math.log(this.children.length)
+					* Math.LOG10E) + 1;
 		var spaces = (new Array(digits + 3)).join(" ");
 		var indentString = (new Array(indent + 1)).join("  ");
 		var spaces = indentString + (new Array(digits + 3)).join(" ");
@@ -164,6 +165,14 @@ module.exports = function (Marca) {
 		for (var i = 0; i < this.children.length; i++)
 			string += this.children[i].toPlainText(0);
 		return (new Array(indent + 1)).join("  ") + "‘" + string + "’";
+	};
+
+	Marca.DOMElementHypertextPreformatted.toPlainText = function (indent) {
+		var string = "";
+		for (var i = 0; i < this.children.length; i++)
+			string += this.children[i].toPlainText(0);
+		return string.replace(/^(?=[^\n])/gm,
+				      (new Array(indent + 1)).join("  "));
 	};
 
 	Marca.DOMElementHypertextBlockPassthrough.toPlainText =

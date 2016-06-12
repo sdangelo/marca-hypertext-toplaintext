@@ -1,6 +1,6 @@
 {
   "name": "marca-hypertext-toplaintext",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Hypertext-to-plaintext for Marca",
   "main": "marca-hypertext-toplaintext.js",
   "scripts": {
@@ -26,5 +26,8 @@
   },
   "peerDependencies": {
     "marca-hypertext": "0.0.x"
+  },
+  "bin": {
+    { "marca2plaintext": "./marca2plaintext.js" }
   }
 }
