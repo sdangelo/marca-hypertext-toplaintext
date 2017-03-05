@@ -1,6 +1,6 @@
 {
   "name": "marca-hypertext-toplaintext",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Hypertext-to-plaintext for Marca",
   "main": "marca-hypertext-toplaintext.js",
   "scripts": {
@@ -25,7 +25,7 @@
     "email": "zanga.mail@gmail.com"
   },
   "peerDependencies": {
-    "marca-hypertext": "0.0.x"
+    "marca-hypertext": "0.1.x"
   },
   "bin": {
     "marca2plaintext": "./marca2plaintext.js"

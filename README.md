@@ -8,6 +8,7 @@ I am too lazy to explain hows and whys.
 
 * ptblock w/o indent? unknown ptblock?
 * table rendering;
+* browserification;
 * more DRY;
 * API review;
 * documentation;

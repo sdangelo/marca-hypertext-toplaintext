@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Stefano D'Angelo <zanga.mail@gmail.com>
+ * Copyright (C) 2016, 2017 Stefano D'Angelo <zanga.mail@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -15,11 +15,11 @@
  */
 
 module.exports = function (Marca) {
-	Marca.DOMElementText.toPlainText = function (indent) {
+	Marca.DOMElementText.toPlainText = function (indent, opt) {
 		return (new Array(indent + 1)).join("  ") + this.text;
 	};
 
-	Marca.DOMElementHypertext.toPlainText = function (indent) {
+	Marca.DOMElementHypertext.toPlainText = function (indent, opt) {
 		var string = "";
 		var prevInline, inline = true;
 		var firstChildIsInline;
@@ -33,7 +33,7 @@ module.exports = function (Marca) {
 				firstChildIsInline = inline;
 			var notFirst = inline && prevInline;
 			var s = this.children[i]
-				    .toPlainText(notFirst ? 0 : indent);
+				    .toPlainText(notFirst ? 0 : indent, opt);
 			if (i != 0 && !notFirst)
 				string += "\n\n";
 			string += s;
@@ -43,27 +43,29 @@ module.exports = function (Marca) {
 					   : "") + string;
 	};
 
-	Marca.DOMElementHypertextHeading.toPlainText = function (indent) {
+	Marca.DOMElementHypertextHeading.toPlainText = function (indent, opt) {
 		var string = "";
 		for (var i = 0; i < this.level; i++)
 			string += "#";
 		string += " ";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return (new Array(indent + 1)).join("  ") + string;
 	};
 
-	Marca.DOMElementHypertextParagraph.toPlainText = function (indent) {
+	Marca.DOMElementHypertextParagraph.toPlainText = function (indent, opt)
+	{
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return (new Array(indent + 1)).join("  ") + string;
 	};
 
-	Marca.DOMElementHypertextUnorderedList.toPlainText = function (indent) {
+	Marca.DOMElementHypertextUnorderedList.toPlainText =
+	function (indent, opt) {
 		var string = "";
 		for (var i = 0; i < this.children.length; i++) {
-			var s = this.children[i].toPlainText(indent + 1)
+			var s = this.children[i].toPlainText(indent + 1, opt)
 				.replace(/  (?=[^ ])/, '* ');
 			if (i != 0)
 				string += "\n";
@@ -72,7 +74,8 @@ module.exports = function (Marca) {
 		return string;
 	};
 
-	Marca.DOMElementHypertextOrderedList.toPlainText = function (indent) {
+	Marca.DOMElementHypertextOrderedList.toPlainText =
+	function (indent, opt) {
 		if (this.children.length == 0)
 			return "";
 
@@ -87,7 +90,7 @@ module.exports = function (Marca) {
 			while (item.length < digits)
 				item = " " + item;
 			var s = indentString + item + ". "
-				+ this.children[i].toPlainText(0)
+				+ this.children[i].toPlainText(0, opt)
 				  .replace(/^(?=[^\n])/gm, spaces)
 				  .substring(spaces.length);
 			if (i != 0)
@@ -97,7 +100,7 @@ module.exports = function (Marca) {
 		return string;
 	};
 
-	Marca.DOMElementHypertextFigure.toPlainText = function (indent) {
+	Marca.DOMElementHypertextFigure.toPlainText = function (indent, opt) {
 		var indentString = (new Array(indent + 1)).join("  ");
 		var string = "Figure: " + this.src;
 		if (this.alt)
@@ -105,89 +108,95 @@ module.exports = function (Marca) {
 		if (this.children.length != 0) {
 			string += "\n" + indentString;
 			for (var i = 0; i < this.children.length; i++)
-				string += this.children[i].toPlainText(0);
+				string += this.children[i].toPlainText(0, opt);
 		}
 		return indentString + string;
 	};
 
-	Marca.DOMElementHypertextBlockQuotation.toPlainText = function (indent)
+	Marca.DOMElementHypertextBlockQuotation.toPlainText =
+	function (indent, opt)
 	{
 		return Marca.DOMElementHypertext.toPlainText
-			    .call(this, indent + 1).replace(/  (?=[^ ])/, ' “')
-		       + '”';
+			    .call(this, indent + 1, opt)
+			    .replace(/  (?=[^ ])/, ' “') + '”';
 	};
 
-	Marca.DOMElementHypertextAnchor.toPlainText = function (indent) {
+	Marca.DOMElementHypertextAnchor.toPlainText = function (indent, opt) {
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return (new Array(indent + 1)).join("  ") + string
 		       + " (" + this.href + ")";
 	};
 
-	Marca.DOMElementHypertextSpan.toPlainText = function (indent) {
+	Marca.DOMElementHypertextSpan.toPlainText = function (indent, opt) {
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return (new Array(indent + 1)).join("  ") + string;
 	};
 
-	Marca.DOMElementHypertextStrong.toPlainText = function (indent) {
+	Marca.DOMElementHypertextStrong.toPlainText = function (indent, opt) {
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return (new Array(indent + 1)).join("  ") + "*" + string + "*";
 	};
 
-	Marca.DOMElementHypertextEmphasis.toPlainText = function (indent) {
+	Marca.DOMElementHypertextEmphasis.toPlainText = function (indent, opt) {
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return (new Array(indent + 1)).join("  ") + "_" + string + "_";
 	};
 
-	Marca.DOMElementHypertextDeleted.toPlainText = function (indent) {
+	Marca.DOMElementHypertextDeleted.toPlainText = function (indent, opt) {
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return (new Array(indent + 1)).join("  ") + "-" + string + "-";
 	};
 
-	Marca.DOMElementHypertextSubscript.toPlainText = function (indent) {
+	Marca.DOMElementHypertextSubscript.toPlainText = function (indent, opt)
+	{
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return (new Array(indent + 1)).join("  ") + "_{" + string + "}";
 	};
 
-	Marca.DOMElementHypertextSuperscript.toPlainText = function (indent) {
+	Marca.DOMElementHypertextSuperscript.toPlainText =
+	function (indent, opt) {
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return (new Array(indent + 1)).join("  ") + "^{" + string + "}";
 	};
 
-	Marca.DOMElementHypertextCode.toPlainText = function (indent) {
+	Marca.DOMElementHypertextCode.toPlainText = function (indent, opt) {
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return (new Array(indent + 1)).join("  ") + "‘" + string + "’";
 	};
 
-	Marca.DOMElementHypertextPreformatted.toPlainText = function (indent) {
+	Marca.DOMElementHypertextPreformatted.toPlainText =
+	function (indent, opt) {
 		var string = "";
 		for (var i = 0; i < this.children.length; i++)
-			string += this.children[i].toPlainText(0);
+			string += this.children[i].toPlainText(0, opt);
 		return string.replace(/^(?=[^\n])/gm,
 				      (new Array(indent + 1)).join("  "));
 	};
 
 	Marca.DOMElementHypertextBlockPassthrough.toPlainText =
-	function (indent) {
-		return this.output == "plaintext"
-		       ? this.children[0].text
-			     .replace(/^(?=[^\n])/gm,
-				      (new Array(indent + 1)).join("  "))
-		       : "";
+	function (indent, opt) {
+		if (this.output != "plaintext")
+			return "";
+		var string = "";
+		for (var i = 0; i < this.children.length; i++)
+			string += this.children[i].text;
+		return string.replace(/^(?=[^\n])/gm,
+				      (new Array(indent + 1)).join("  "));
 	};
 };
